@@ -78,7 +78,7 @@ public class FormateurDAO extends DAO<Formateur> {
                     Short cp = rs.getShort("CP");
                     String tel = rs.getString("TEL");
 
-                    return new Formateur(0, matricule, nom, prenom, rue, localite, cp, tel);
+                    return new Formateur(idform, matricule, nom, prenom, rue, localite, cp, tel);
 
                 } else {
                     throw new SQLException("Code inconnu");
@@ -97,7 +97,7 @@ public class FormateurDAO extends DAO<Formateur> {
      */
     @Override
     public Formateur update(Formateur obj) throws SQLException {
-        String req = "update formateur set idform=?,matricule=?,nom=?,prenom=?,rue=?,localite=?,cp=?,tel=? where idlocal= ?";
+        String req = "update formateur set idform=?,matricule=?,nom=?,prenom=?,rue=?,localite=?,cp=?,tel=? where idform= ?";
         try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
 
             pstm.setInt(9, obj.getIdform());
@@ -127,13 +127,27 @@ public class FormateurDAO extends DAO<Formateur> {
     @Override
     public void delete(Formateur obj) throws SQLException {
         String req = "delete from formateur where idform= ?";
-        try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
+        String req2 = "delete from infos where idform = ?";
+        try (PreparedStatement pstm2 = dbConnect.prepareStatement(req2);
+             PreparedStatement pstm = dbConnect.prepareStatement(req)) {
 
+            
+            pstm2.setInt(1, obj.getIdform());
+            
+            try(ResultSet rs = pstm2.executeQuery()){
+                if(rs.next()){
+                    System.out.println("Ligne dans la table infos supprimée");
+                }
+                
+            }
             pstm.setInt(1, obj.getIdform());
             int n = pstm.executeUpdate();
             if (n == 0) {
                 throw new SQLException("aucune ligne formateur effacée");
             }
+            
+            
+            
 
         }
     }

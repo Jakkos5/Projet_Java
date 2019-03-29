@@ -23,7 +23,7 @@ import myconnections.DBConnection;
  *
  * @author donof
  */
-public class Gestion{
+public class Gestion {
 
     Scanner sc = new Scanner(System.in);
     Locaux lcActuel = null;
@@ -31,11 +31,11 @@ public class Gestion{
     DAO<Locaux> locauxDAO = null;
     DAO<Formateur> formateurDAO = null;
 
-    public Gestion(){
+    public Gestion() {
 
     }
 
-    public void menu(){
+    public void menu() {
 
         Connection dbConnect = DBConnection.getConnection();
         if (dbConnect == null) {
@@ -52,86 +52,91 @@ public class Gestion{
 
         //menu permettant de choisir la classe avec laquelle on souhaite travailler
         int choix = 0;
-        do{
-        System.out.println("1.Locaux \n2.Formateur \n3.Infos \n4.Sessioncours \n5.Fin");
-        System.out.println("Choix: ");
-        choix = sc.nextInt();
-        sc.skip("\n");
-        switch (choix){
-            case 1 : int ch = 0;
-                        //menu Locaux et vues
-                        do {
-                            System.out.println("1.Nouveau \n2.Recherche\n3.Recherche sur la description\n4.Modification\n5.Suppresion.\n6.Affichage Sessions\n7.Affichage heures par session\n8.Fin\n");
-                            System.out.print("choix :");
-                            ch = sc.nextInt();
-                            sc.skip("\n");
-                            switch (ch) {
-                                case 1:
-                                    insertionLocaux();
-                                    break;
-                                case 2:
-                                    rechercheLocaux();
-                                    break;
-                                case 3:
-                                    rechDescription();
-                                    break;
-                                case 4:
-                                    modificationLocaux();
-                                    break;
-                                case 5:
-                                    suppressionLocaux();
-                                    break;
-                                case 6:
-                                    affSession();
-                                    break;
-                                case 7:
-                                    affHeures();
-                                    break;
-                                case 8:
-                                    System.out.println("bye");
-                                    break;
-                                default:
-                                    System.out.println("choix incorrect");
-                            }
+        do {
+            System.out.println("1.Locaux \n2.Formateur \n3.Infos \n4.Sessioncours \n5.Fin");
+            System.out.println("Choix: ");
+            choix = sc.nextInt();
+            sc.skip("\n");
+            switch (choix) {
+                case 1:
+                    int ch = 0;
+                    //menu Locaux et vues
+                    do {
+                        System.out.println("1.Nouveau \n2.Recherche\n3.Recherche sur la description\n4.Modification\n5.Suppresion.\n6.Affichage Sessions\n7.Affichage heures par session\n8.Fin\n");
+                        System.out.print("choix :");
+                        ch = sc.nextInt();
+                        sc.skip("\n");
+                        switch (ch) {
+                            case 1:
+                                insertionLocaux();
+                                break;
+                            case 2:
+                                rechercheLocaux();
+                                break;
+                            case 3:
+                                rechDescription();
+                                break;
+                            case 4:
+                                modificationLocaux();
+                                break;
+                            case 5:
+                                suppressionLocaux();
+                                break;
+                            case 6:
+                                affSession();
+                                break;
+                            case 7:
+                                affHeures();
+                                break;
+                            case 8:
+                                System.out.println("bye\n");
+                                break;
+                            default:
+                                System.out.println("choix incorrect");
+                        }
 
-                        } while (ch != 8);
-                        
-            case 2 :  int ch1 = 0;
-                        //menu pour les formateurs
-                        do {
-                            System.out.println("1.Nouveau \n2.Recherche\n3.Modification\n4.Suppresion.\n5.Fin\n");
-                            System.out.print("choix :");
-                            ch1 = sc.nextInt();
-                            sc.skip("\n");
-                            switch (ch1) {
-                                case 1:
-                                    insertionFormateur();
-                                    break;
-                                case 2:
-                                    rechercheFormateur();
-                                    break;
-                                case 3:
-                                    modificationFormateur();
-                                    break;
-                                case 4:
-                                    suppressionFormateur();  
-                                case 5:
-                                    System.out.println("bye");
-                                    break;
-                                default:
-                                    System.out.println("choix incorrect");
-                            }
-                            
-                        } while (ch1 != 5);  
-            case 5 :System.out.println("Aurevoir");
-            break;
-            default: System.out.println("Choix incorrect");
-        }}while(choix != 5);
-        
+                    } while (ch != 8);
+
+                case 2:
+                    int ch1 = 0;
+                    //menu pour les formateurs
+                    do {
+                        System.out.println("1.Nouveau \n2.Recherche\n3.Modification\n4.Suppresion.\n5.Fin\n");
+                        System.out.print("choix :");
+                        ch1 = sc.nextInt();
+                        sc.skip("\n");
+                        switch (ch1) {
+                            case 1:
+                                insertionFormateur();
+                                break;
+                            case 2:
+                                rechercheFormateur();
+                                break;
+                            case 3:
+                                modificationFormateur();
+                                break;
+                            case 4:
+                                suppressionFormateur();
+                            case 5:
+                                System.out.println("bye");
+                                break;
+                            default:
+                                System.out.println("choix incorrect");
+                        }
+
+                    } while (ch1 != 5);
+                case 5:
+                    System.out.println("Aurevoir\n");
+                    break;
+                default:
+                    System.out.println("Choix incorrect");
+            }
+        } while (choix != 5);
+
         DBConnection.closeConnection();
     }
 
-    public void insertionLocaux(){
+    public void insertionLocaux() {
 
         System.out.print("sigle :");
         String sigle = sc.nextLine();
@@ -150,9 +155,9 @@ public class Gestion{
 
     }
 
-    public void rechercheLocaux(){
+    public void rechercheLocaux() {
         try {
-            System.out.println("numéro recherché :");
+            System.out.println("Id du local recherché :");
             int nc = sc.nextInt();
             lcActuel = locauxDAO.read(nc);
             System.out.println("local actuel : " + lcActuel);
@@ -162,9 +167,8 @@ public class Gestion{
         }
 
     }
-    
 
-    public void modificationLocaux(){
+    public void modificationLocaux() {
         try {
             System.out.println("Sigle: ");
             String sigle = sc.nextLine();
@@ -183,16 +187,16 @@ public class Gestion{
         }
     }
 
-    public void suppressionLocaux(){
+    public void suppressionLocaux() {
         try {
             locauxDAO.delete(lcActuel);
             System.out.println("Ligne supprimée\n");
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("erreur " + e.getMessage());
         }
     }
 
-     public void rechDescription() {
+    public void rechDescription() {
         System.out.println("description recherchée : ");
         String desc = sc.nextLine();
         try {
@@ -204,9 +208,8 @@ public class Gestion{
             System.out.println("erreur " + e.getMessage());
         }
     }
-  
-    
-    public void affSession(){
+
+    public void affSession() {
         System.out.println("Id du formateur : ");
         int idform = sc.nextInt();
         try {
@@ -217,23 +220,23 @@ public class Gestion{
         } catch (SQLException e) {
             System.out.println("erreur " + e.getMessage());
         }
-        
+
     }
-    
+
     public void affHeures() {
         try {
             System.out.println("Id de la session de cours: ");
             int id = sc.nextInt();
-            
+
             int heures = ((FormateurDAO) formateurDAO).totHeures(id);
-            
-            System.out.println("Heures totales de cette session: "+heures+"\n");
+
+            System.out.println("Heures totales de cette session: " + heures + "\n");
         } catch (SQLException e) {
             System.out.println("erreur " + e.getMessage());
         }
     }
-    
-    public void insertionFormateur(){
+
+    public void insertionFormateur() {
         System.out.print("Matricule :");
         String matricule = sc.nextLine();
         System.out.print("Nom: ");
@@ -249,8 +252,8 @@ public class Gestion{
         sc.skip("\n");
         System.out.println("Telephone: ");
         String tel = sc.nextLine();
-        
-        fmActuel = new Formateur(0, matricule, nom, prenom,rue,localite,CP,tel);
+
+        fmActuel = new Formateur(0, matricule, nom, prenom, rue, localite, CP, tel);
         try {
             fmActuel = formateurDAO.create(fmActuel);
             System.out.println("formateur actuel : " + fmActuel);
@@ -258,19 +261,66 @@ public class Gestion{
             System.out.println("erreur :" + e);
         }
     }
-    
-    public void rechercheFormateur(){
-        
+
+    public void rechercheFormateur() {
+
+        try {
+            System.out.println("Id du formateur recherché :");
+            int nc = sc.nextInt();
+            fmActuel = formateurDAO.read(nc);
+            System.out.println("formateur actuel : " + fmActuel);
+
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+
     }
-    
-    public void modificationFormateur(){
-        
+
+    public void modificationFormateur() {
+
+        try {
+            System.out.println("Matricule: ");
+            String matricule = sc.nextLine();
+            fmActuel.setMatricule(matricule);
+            System.out.println("Nom :");
+            String nom = sc.nextLine();
+            fmActuel.setNom(nom);
+            System.out.println("Prenom: ");
+            String prenom = sc.nextLine();
+            fmActuel.setPrenom(prenom);
+            System.out.println("Rue: ");
+            String rue = sc.nextLine();
+            fmActuel.setRue(rue);
+            System.out.println("Localite: ");
+            String localite = sc.nextLine();
+            fmActuel.setLocalite(localite);
+            System.out.println("Code postal: ");
+            Short CP = sc.nextShort();
+            fmActuel.setCP(CP);
+            sc.skip("\n");
+            System.out.println("Telephone: ");
+            String tel = sc.nextLine();
+            fmActuel.setTel(tel);
+            formateurDAO.update(fmActuel);
+            System.out.println("ligne modifiée\n");
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+
     }
-    
-    public void suppressionFormateur(){
-        
+
+    public void suppressionFormateur() {
+
+        try {
+            formateurDAO.delete(fmActuel);
+            System.out.println("Ligne supprimée\n");
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+
     }
-      public static void main(String[] args) {
+
+    public static void main(String[] args) {
         Gestion g = new Gestion();
         g.menu();
     }
