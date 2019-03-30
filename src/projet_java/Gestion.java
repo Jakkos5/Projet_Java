@@ -62,7 +62,7 @@ public class Gestion {
                     int ch = 0;
                     //menu Locaux et vues
                     do {
-                        System.out.println("1.Nouveau \n2.Recherche\n3.Recherche sur la description\n4.Modification\n5.Suppresion.\n6.Affichage Sessions\n7.Affichage heures par session\n8.Fin\n");
+                        System.out.println("1.Nouveau \n2.Recherche\n3.Recherche sur la description\n4.Modification\n5.Suppresion\n6.Fin\n");
                         System.out.print("choix :");
                         ch = sc.nextInt();
                         sc.skip("\n");
@@ -83,25 +83,19 @@ public class Gestion {
                                 suppressionLocaux();
                                 break;
                             case 6:
-                                affSession();
-                                break;
-                            case 7:
-                                affHeures();
-                                break;
-                            case 8:
                                 System.out.println("bye\n");
                                 break;
                             default:
                                 System.out.println("choix incorrect");
                         }
 
-                    } while (ch != 8);
+                    } while (ch != 6);
 
                 case 2:
                     int ch1 = 0;
                     //menu pour les formateurs
                     do {
-                        System.out.println("1.Nouveau \n2.Recherche\n3.Modification\n4.Suppresion.\n5.Fin\n");
+                        System.out.println("1.Nouveau\n2.Recherche\n3.Modification\n4.Suppresion\n5.Affichage Sessions\n6.Affichage heures par session\n7.Fin\n");
                         System.out.print("choix :");
                         ch1 = sc.nextInt();
                         sc.skip("\n");
@@ -118,13 +112,19 @@ public class Gestion {
                             case 4:
                                 suppressionFormateur();
                             case 5:
-                                System.out.println("bye");
+                                affSession();
+                                break;
+                            case 6:
+                                affHeures();
+                                break;
+                            case 7:
+                                System.out.println("Goodbye");
                                 break;
                             default:
                                 System.out.println("choix incorrect");
                         }
 
-                    } while (ch1 != 5);
+                    } while (ch1 != 7);
                 case 5:
                     System.out.println("Aurevoir\n");
                     break;
