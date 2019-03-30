@@ -140,9 +140,8 @@ public class Gestion {
 
         System.out.print("sigle :");
         String sigle = sc.nextLine();
-        System.out.print("places:");
-        int places = sc.nextInt();
-        sc.skip("\n");
+        String p = saisie("places: ","[1-9][0-9]*");
+        int places = Integer.parseInt(p);
         System.out.print("Description :");
         String description = sc.nextLine();
         lcActuel = new Locaux(0, sigle, places, description);
@@ -320,6 +319,22 @@ public class Gestion {
 
     }
 
+    
+    public String saisie(String message, String regex) {
+        Scanner sc = new Scanner(System.in);
+        String str;
+        do {
+            System.out.println(message);
+            str = sc.nextLine();
+            if (!str.matches(regex)) {
+                System.out.println("Entrée incorrecte, veuillez recommencer");
+            }
+        } while (!str.matches(regex));
+
+        return str;
+    }
+    
+    
     public static void main(String[] args) {
         Gestion g = new Gestion();
         g.menu();

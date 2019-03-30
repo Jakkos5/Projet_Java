@@ -23,17 +23,29 @@ public class LocauxDAO extends DAO<Locaux> {
     @Override
     public Locaux create(Locaux obj) throws SQLException {
 
+        String req0 = "select * from local";
         String req1 = "insert into local(sigle,places,description) values(?,?,?)";
         String req2 = "select idlocal from local where sigle=?";
-        try (PreparedStatement pstm1 = dbConnect.prepareStatement(req1);
+        try (PreparedStatement pstm0 = dbConnect.prepareStatement(req0);
+                PreparedStatement pstm1 = dbConnect.prepareStatement(req1);
                 PreparedStatement pstm2 = dbConnect.prepareStatement(req2)) {
             pstm1.setString(1, obj.getSigle());
             pstm1.setInt(2, obj.getPlaces());
             pstm1.setString(3, obj.getDescription());
-            int n = pstm1.executeUpdate();
+            int n;
+            try {
+                n = pstm1.executeUpdate();
+            } catch (SQLException sqle) {
+                SQLException monException = new SQLException("Sigle déjà existant");
+                monException.setNextException(sqle);
+                throw monException;
+            }
+            
+
             if (n == 0) {
                 throw new SQLException("erreur de creation de local, aucune ligne créée");
             }
+
             pstm2.setString(1, obj.getSigle());
             try (ResultSet rs = pstm2.executeQuery()) {
                 if (rs.next()) {
@@ -53,7 +65,7 @@ public class LocauxDAO extends DAO<Locaux> {
      * @throws SQLException code inconnu
      * @param idlocal identifiant du local
      * @return local trouvé
-     */   
+     */
     @Override
     public Locaux read(int idlocal) throws SQLException {
 
@@ -126,8 +138,9 @@ public class LocauxDAO extends DAO<Locaux> {
     }
 
     /**
-     * méthode permettant de récupérer tous les locaux portant une certaine description
-
+     * méthode permettant de récupérer tous les locaux portant une certaine
+     * description
+     *
      * @param desc description recherchée
      * @return liste de locaux
      * @throws SQLException nom inconnu
@@ -137,7 +150,7 @@ public class LocauxDAO extends DAO<Locaux> {
         String req = "select * from local where description like ?";
 
         try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
-            pstm.setString(1,"%"+desc+"%");
+            pstm.setString(1, "%" + desc + "%");
             try (ResultSet rs = pstm.executeQuery()) {
                 boolean trouve = false;
                 while (rs.next()) {
@@ -156,8 +169,7 @@ public class LocauxDAO extends DAO<Locaux> {
                 }
             }
         }
-        
-        
+
     }
-    
+
 }
