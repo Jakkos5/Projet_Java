@@ -5,6 +5,7 @@
  */
 package projet_java;
 
+import formation.DAO.CoursDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ import formation.metier.Locaux;
 import formation.DAO.DAO;
 import formation.DAO.FormateurDAO;
 import formation.DAO.LocauxDAO;
+import formation.metier.Cours;
 import formation.metier.Formateur;
 import formation.metier.SessionCours;
 import myconnections.DBConnection;
@@ -28,6 +30,8 @@ public class Gestion {
     Scanner sc = new Scanner(System.in);
     Locaux lcActuel = null;
     Formateur fmActuel = null;
+    Cours csActuel = null;
+    DAO<Cours> coursDAO = null;
     DAO<Locaux> locauxDAO = null;
     DAO<Formateur> formateurDAO = null;
 
@@ -49,11 +53,15 @@ public class Gestion {
         locauxDAO.setConnection(dbConnect);
         formateurDAO = new FormateurDAO();
         formateurDAO.setConnection(dbConnect);
+        coursDAO = new CoursDAO();
+        coursDAO.setConnection(dbConnect);
+        
 
         //menu permettant de choisir la classe avec laquelle on souhaite travailler
         int choix = 0;
         do {
-            System.out.println("1.Locaux \n2.Formateur \n3.Infos \n4.Sessioncours \n5.Fin");
+            System.out.println("1.Locaux \n2.Formateur \n3.Cours"
+                    + " \n4.Sessioncours \n5.Fin");
             System.out.println("Choix: ");
             choix = sc.nextInt();
             sc.skip("\n");
@@ -90,10 +98,10 @@ public class Gestion {
                         }
 
                     } while (ch != 6);
-
+                    break;
                 case 2:
                     int ch1 = 0;
-                    //menu pour les formateurs
+                    //menu pour les formateurs et vues
                     do {
                         System.out.println("1.Nouveau\n2.Recherche\n3.Modification\n4.Suppresion\n5.Affichage Sessions\n6.Affichage heures par session\n7.Fin\n");
                         System.out.print("choix :");
@@ -125,6 +133,36 @@ public class Gestion {
                         }
 
                     } while (ch1 != 7);
+                case 3:
+                    int ch2 = 0;
+                    //menu cours
+                    do {
+                        System.out.println("1.Nouveau \n2.Recherche\n3.Modification\n4.Suppresion\n5.Fin\n");
+                        System.out.print("choix :");
+                        ch2 = sc.nextInt();
+                        sc.skip("\n");
+                        switch (ch2) {
+                            case 1:
+                                insertionCours();
+                                break;
+                            case 2:
+                                rechercheCours();
+                                break;
+                            case 3:
+                                modificationCours();
+                                break;
+                            case 4:
+                                suppressionCours();
+                                break;
+                            case 5:
+                                System.out.println("bye\n");
+                                break;
+                            default:
+                                System.out.println("choix incorrect");
+                        }
+
+                    } while (ch2 != 5);
+                    break;
                 case 5:
                     System.out.println("Aurevoir\n");
                     break;
@@ -140,7 +178,7 @@ public class Gestion {
 
         System.out.print("sigle :");
         String sigle = sc.nextLine();
-        String p = saisie("places: ","[1-9][0-9]*");
+        String p = saisie("places: ", "[1-9][0-9]*");
         int places = Integer.parseInt(p);
         System.out.print("Description :");
         String description = sc.nextLine();
@@ -319,7 +357,6 @@ public class Gestion {
 
     }
 
-    
     public String saisie(String message, String regex) {
         Scanner sc = new Scanner(System.in);
         String str;
@@ -333,8 +370,65 @@ public class Gestion {
 
         return str;
     }
-    
-    
+
+    public void insertionCours() {
+
+        System.out.print("Matiere :");
+        String matiere = sc.nextLine();
+        System.out.print("Nombre d'heures :");
+        int heures = sc.nextInt();
+        csActuel = new Cours(0, matiere, heures);
+        try {
+            csActuel = coursDAO.create(csActuel);
+            System.out.println("cours actuel : " + csActuel);
+        } catch (SQLException e) {
+            System.out.println("erreur :" + e);
+        }
+
+    }
+
+    public void rechercheCours() {
+
+        try {
+            System.out.println("Id du cours recherché :");
+            int nc = sc.nextInt();
+            csActuel = coursDAO.read(nc);
+            System.out.println("cours actuel : " + csActuel);
+
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+
+    }
+
+    public void modificationCours() {
+
+        try {
+            System.out.println("Matiere: ");
+            String matiere = sc.nextLine();
+            csActuel.setMatiere(matiere);
+            System.out.println("Heures :");
+            int heures = sc.nextInt();
+            csActuel.setHeures(heures);
+
+            coursDAO.update(csActuel);
+            System.out.println("ligne modifiée\n");
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+    }
+
+    public void suppressionCours() {
+
+        try {
+            coursDAO.delete(csActuel);
+            System.out.println("Ligne supprimée\n");
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+
+    }
+
     public static void main(String[] args) {
         Gestion g = new Gestion();
         g.menu();

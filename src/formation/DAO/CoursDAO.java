@@ -24,7 +24,7 @@ public class CoursDAO extends DAO<Cours> {
     public Cours create(Cours obj) throws SQLException {
 
         String req1 = "insert into cours(matiere,heures) values(?,?)";
-        String req2 = "select idcours from cours where idcours=?";
+        String req2 = "select idcours from cours where matiere=?";
         try (PreparedStatement pstm1 = dbConnect.prepareStatement(req1);
                 PreparedStatement pstm2 = dbConnect.prepareStatement(req2)) {
             pstm1.setString(1, obj.getMatiere());
@@ -33,7 +33,8 @@ public class CoursDAO extends DAO<Cours> {
             if (n == 0) {
                 throw new SQLException("erreur de creation du cours, aucune ligne créée");
             }
-            pstm2.setInt(1, obj.getIdcours());
+            
+            pstm2.setString(1, obj.getMatiere());
             try (ResultSet rs = pstm2.executeQuery()) {
                 if (rs.next()) {
                     int idcours = rs.getInt(1);
@@ -86,10 +87,11 @@ public class CoursDAO extends DAO<Cours> {
      */
     @Override
     public Cours update(Cours obj) throws SQLException {
-        String req = "update cours set idcours=?,matiere=?,heures=? where idform= ?";
+        String req = "update cours set idcours=?,matiere=?,heures=? where idcours=?";
         try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
 
-            pstm.setInt(9, obj.getIdcours());
+            System.out.println(obj.getIdcours());
+            pstm.setInt(4, obj.getIdcours());
             pstm.setInt(1, obj.getIdcours());
             pstm.setString(2, obj.getMatiere());
             pstm.setInt(3, obj.getHeures());
@@ -113,20 +115,20 @@ public class CoursDAO extends DAO<Cours> {
     public void delete(Cours obj) throws SQLException {
         String req = "delete from sessioncours where idcours= ?";
         String req2 = "delete from cours where idcours = ?";
-        try (PreparedStatement pstm2 = dbConnect.prepareStatement(req2);
-             PreparedStatement pstm = dbConnect.prepareStatement(req)) {
+        try (PreparedStatement pstm = dbConnect.prepareStatement(req);
+             PreparedStatement pstm2 = dbConnect.prepareStatement(req2)) {
 
             
-            pstm2.setInt(1, obj.getIdcours());
+            pstm.setInt(1, obj.getIdcours());
             
-            try(ResultSet rs = pstm2.executeQuery()){
+            try(ResultSet rs = pstm.executeQuery()){
                 if(rs.next()){
                     System.out.println("Ligne dans la table sessioncours supprimée");
                 }
                 
             }
-            pstm.setInt(1, obj.getIdcours());
-            int n = pstm.executeUpdate();
+            pstm2.setInt(1, obj.getIdcours());
+            int n = pstm2.executeUpdate();
             if (n == 0) {
                 throw new SQLException("aucune ligne cours effacée");
             }
