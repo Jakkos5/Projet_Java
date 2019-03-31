@@ -1,7 +1,7 @@
 package formation.DAO;
 
 /**
- * classe de mappage poo-relationnel formateur
+ * classe de mappage poo-relationnel Cours
  *
  * @author D'Onofrio Terence
  * @version 1.0
@@ -90,7 +90,7 @@ public class CoursDAO extends DAO<Cours> {
         String req = "update cours set idcours=?,matiere=?,heures=? where idcours=?";
         try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
 
-            System.out.println(obj.getIdcours());
+            
             pstm.setInt(4, obj.getIdcours());
             pstm.setInt(1, obj.getIdcours());
             pstm.setString(2, obj.getMatiere());

@@ -10,6 +10,7 @@ package formation.DAO;
 import java.sql.*;
 import formation.metier.Formateur;
 import formation.metier.SessionCours;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -188,7 +189,7 @@ public class FormateurDAO extends DAO<Formateur> {
     }
     /**
      * méthode permettant de récupérer le nombre d'heures totales de cours organisées pour une certaine session 
-     * @param id identifiant de la session de cours
+     * @param idSess identifiant de la session de cours
      * @return le nombre d'heures totales
      * @throws SQLException 
      */

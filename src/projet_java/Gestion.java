@@ -7,8 +7,6 @@ package projet_java;
 
 import formation.DAO.CoursDAO;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
@@ -16,9 +14,11 @@ import formation.metier.Locaux;
 import formation.DAO.DAO;
 import formation.DAO.FormateurDAO;
 import formation.DAO.LocauxDAO;
+import formation.DAO.SessionCoursDAO;
 import formation.metier.Cours;
 import formation.metier.Formateur;
 import formation.metier.SessionCours;
+import java.sql.Date;
 import myconnections.DBConnection;
 
 /**
@@ -31,9 +31,11 @@ public class Gestion {
     Locaux lcActuel = null;
     Formateur fmActuel = null;
     Cours csActuel = null;
+    SessionCours scActuel = null;
     DAO<Cours> coursDAO = null;
     DAO<Locaux> locauxDAO = null;
     DAO<Formateur> formateurDAO = null;
+    DAO<SessionCours> sessioncoursDAO = null;
 
     public Gestion() {
 
@@ -55,13 +57,13 @@ public class Gestion {
         formateurDAO.setConnection(dbConnect);
         coursDAO = new CoursDAO();
         coursDAO.setConnection(dbConnect);
-        
+        sessioncoursDAO = new SessionCoursDAO();
+        sessioncoursDAO.setConnection(dbConnect);
 
         //menu permettant de choisir la classe avec laquelle on souhaite travailler
         int choix = 0;
         do {
-            System.out.println("1.Locaux \n2.Formateur \n3.Cours"
-                    + " \n4.Sessioncours \n5.Fin");
+            System.out.println("1.Locaux \n2.Formateur \n3.Cours \n4.Sessioncours \n5.Fin");
             System.out.println("Choix: ");
             choix = sc.nextInt();
             sc.skip("\n");
@@ -162,6 +164,36 @@ public class Gestion {
                         }
 
                     } while (ch2 != 5);
+                    break;
+                case 4:
+                    int ch3 = 0;
+                    //menu sessioncours
+                    do {
+                        System.out.println("1.Nouveau \n2.Recherche\n3.Modification\n4.Suppresion\n5.Fin\n");
+                        System.out.print("choix :");
+                        ch3 = sc.nextInt();
+                        sc.skip("\n");
+                        switch (ch3) {
+                            case 1:
+                                insertionSessionCours();
+                                break;
+                            case 2:
+                                rechercheSessionCours();
+                                break;
+                            case 3:
+                                modificationSessionCours();
+                                break;
+                            case 4:
+                                suppressionSessionCours();
+                                break;
+                            case 5:
+                                System.out.println("bye bye\n");
+                                break;
+                            default:
+                                System.out.println("choix incorrect");
+                        }
+
+                    } while (ch3 != 5);
                     break;
                 case 5:
                     System.out.println("Aurevoir\n");
@@ -357,20 +389,6 @@ public class Gestion {
 
     }
 
-    public String saisie(String message, String regex) {
-        Scanner sc = new Scanner(System.in);
-        String str;
-        do {
-            System.out.println(message);
-            str = sc.nextLine();
-            if (!str.matches(regex)) {
-                System.out.println("Entrée incorrecte, veuillez recommencer");
-            }
-        } while (!str.matches(regex));
-
-        return str;
-    }
-
     public void insertionCours() {
 
         System.out.print("Matiere :");
@@ -427,6 +445,97 @@ public class Gestion {
             System.out.println("erreur " + e.getMessage());
         }
 
+    }
+
+    public void insertionSessionCours() {
+
+        String dd = saisie("Date de debut: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][1-9]");
+        Date datedebut = Date.valueOf(dd);
+        String df = saisie("Date de fin: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][1-9]");
+        Date datefin = Date.valueOf(df);
+        System.out.println("Nombre d'inscrits: ");
+        int nbreinscrits = sc.nextInt();
+        sc.skip("\n");
+        System.out.println("Id du cours: ");
+        int idcours = sc.nextInt();
+        sc.skip("\n");
+        System.out.println("Id du local");
+        int idlocal = sc.nextInt();
+
+        scActuel = new SessionCours(0, datedebut, datefin, nbreinscrits, idcours, idlocal);
+        try {
+            scActuel = sessioncoursDAO.create(scActuel);
+            System.out.println("Session de cours actuelle : " + scActuel);
+        } catch (SQLException e) {
+            System.out.println("erreur :" + e);
+        }
+    }
+
+    public void rechercheSessionCours() {
+
+        try {
+            System.out.println("Id de la session du cours recherché :");
+            int nc = sc.nextInt();
+            scActuel = sessioncoursDAO.read(nc);
+            System.out.println("session de cours actuelle : " + scActuel);
+
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+
+    }
+
+    public void modificationSessionCours() {
+
+        try {
+            String dd = saisie("Date de debut: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][1-9]");
+            Date datedebut = Date.valueOf(dd);
+            scActuel.setDatedebut(datedebut);
+            String df = saisie("Date de fin: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][1-9]");
+            Date datefin = Date.valueOf(df);
+            scActuel.setDatefin(datefin);
+            System.out.println("Nombre d'inscrits: ");
+            int nbreinscrits = sc.nextInt();
+            scActuel.setNbreinscrits(nbreinscrits);
+            sc.skip("\n");
+            System.out.println("Id du cours: ");
+            int idcours = sc.nextInt();
+            scActuel.setIdcours(idcours);
+            sc.skip("\n");
+            System.out.println("Id du local");
+            int idlocal = sc.nextInt();
+            scActuel.setIdlocal(idlocal);
+
+            sessioncoursDAO.update(scActuel);
+            System.out.println("ligne modifiée\n");
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+    }
+
+    public void suppressionSessionCours() {
+
+        try {
+            sessioncoursDAO.delete(scActuel);
+
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+
+    }
+
+    public String saisie(String message, String regex) {
+        Scanner sc = new Scanner(System.in);
+        String str;
+        do {
+            System.out.println(message);
+            str = sc.nextLine();
+            if (!str.matches(regex)) {
+                System.out.println("Entrée incorrecte, veuillez recommencer");
+            }
+        } while (!str.matches(regex));
+
+        return str;
     }
 
     public static void main(String[] args) {
