@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="jPanel1">
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="labelidsessioncours" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="labelDatefin" alignment="0" max="32767" attributes="0"/>
+                          <Component id="labelDatedebut" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Component id="labelInscrits" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelIdcours" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelIdlocal" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnRecherche" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="txtIdsessioncours" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDatedebut" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDatefin" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtIdcours" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtIdlocal" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtNbreinscrits" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="91" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="btnMaj" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="btnEffacer" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="labelidsessioncours" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtIdsessioncours" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="labelDatedebut" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtDatedebut" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                  <Component id="labelDatefin" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="txtDatefin" min="-2" pref="26" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="labelInscrits" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNbreinscrits" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="labelIdcours" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtIdcours" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                          <Component id="labelIdlocal" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="txtIdlocal" alignment="1" min="-2" pref="26" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="49" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnRecherche" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnMaj" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnEffacer" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="labelidsessioncours">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Id de la session"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtIdsessioncours">
+          <Properties>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[50, 20]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[150, 30]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIdsessioncoursActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelDatedebut">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Date de d&#xe9;but"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtDatedebut">
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelDatefin">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Date de fin"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtDatefin">
+        </Component>
+        <Component class="javax.swing.JButton" name="btnRecherche">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Rechercher"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRechercheActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtIdcours">
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtIdlocal">
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelInscrits">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Nombre d&apos;inscrits"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelIdcours">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Id du cours"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtNbreinscrits">
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelIdlocal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Id du local"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnMaj">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="M&#xe0;j"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMajActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnEffacer">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Effacer"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEffacerActionPerformed"/>
+          </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

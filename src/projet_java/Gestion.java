@@ -449,9 +449,9 @@ public class Gestion {
 
     public void insertionSessionCours() {
 
-        String dd = saisie("Date de debut: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][1-9]");
+        String dd = saisie("Date de debut: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][0-9]");
         Date datedebut = Date.valueOf(dd);
-        String df = saisie("Date de fin: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][1-9]");
+        String df = saisie("Date de fin: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][0-9]");
         Date datefin = Date.valueOf(df);
         System.out.println("Nombre d'inscrits: ");
         int nbreinscrits = sc.nextInt();
@@ -488,10 +488,10 @@ public class Gestion {
     public void modificationSessionCours() {
 
         try {
-            String dd = saisie("Date de debut: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][1-9]");
+            String dd = saisie("Date de debut: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][0-9]");
             Date datedebut = Date.valueOf(dd);
             scActuel.setDatedebut(datedebut);
-            String df = saisie("Date de fin: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][1-9]");
+            String df = saisie("Date de fin: (format YYYY-MM-DD)", "[2][0][1-2][0-9]-[0-1][1-9]-[0-3][0-9]");
             Date datefin = Date.valueOf(df);
             scActuel.setDatefin(datefin);
             System.out.println("Nombre d'inscrits: ");

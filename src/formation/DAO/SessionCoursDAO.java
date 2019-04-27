@@ -98,8 +98,8 @@ public class SessionCoursDAO extends DAO<SessionCours> {
         try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
 
             
-            pstm.setInt(7, obj.getIdcours());
-            pstm.setInt(1, obj.getIdcours());
+            pstm.setInt(7, obj.getIdsessioncours());
+            pstm.setInt(1, obj.getIdsessioncours());
             pstm.setDate(2, obj.getDatedebut());
             pstm.setDate(3, obj.getDatefin());
             pstm.setInt(4, obj.getNbreinscrits());
