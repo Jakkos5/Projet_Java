@@ -70,7 +70,7 @@ public class Gestion {
             switch (choix) {
                 case 1:
                     int ch = 0;
-                    //menu Locaux et vues
+                    //menu Locaux
                     do {
                         System.out.println("1.Nouveau \n2.Recherche\n3.Recherche sur la description\n4.Modification\n5.Suppresion\n6.Fin\n");
                         System.out.print("choix :");
@@ -139,7 +139,7 @@ public class Gestion {
                     int ch2 = 0;
                     //menu cours
                     do {
-                        System.out.println("1.Nouveau \n2.Recherche\n3.Modification\n4.Suppresion\n5.Fin\n");
+                        System.out.println("1.Nouveau \n2.Recherche\n3.Modification\n4.Suppresion\n5.Affichage session(s) du cours actuel\n6.Fin\n");
                         System.out.print("choix :");
                         ch2 = sc.nextInt();
                         sc.skip("\n");
@@ -157,13 +157,16 @@ public class Gestion {
                                 suppressionCours();
                                 break;
                             case 5:
+                                affSessioncours();
+                                break;
+                            case 6:
                                 System.out.println("bye\n");
                                 break;
                             default:
                                 System.out.println("choix incorrect");
                         }
 
-                    } while (ch2 != 5);
+                    } while (ch2 != 6);
                     break;
                 case 4:
                     int ch3 = 0;
@@ -441,6 +444,20 @@ public class Gestion {
         try {
             coursDAO.delete(csActuel);
             System.out.println("Ligne supprimée\n");
+        } catch (SQLException e) {
+            System.out.println("erreur " + e.getMessage());
+        }
+
+    }
+    
+    public void affSessioncours(){
+        
+       
+        try {
+            List<SessionCours> SC = ((CoursDAO) coursDAO).affSessioncours(csActuel.getIdcours());
+            for (SessionCours S : SC) {
+                System.out.println(S);
+            }
         } catch (SQLException e) {
             System.out.println("erreur " + e.getMessage());
         }

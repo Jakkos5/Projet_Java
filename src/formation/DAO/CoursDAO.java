@@ -9,6 +9,9 @@ package formation.DAO;
  */
 import java.sql.*;
 import formation.metier.Cours;
+import formation.metier.SessionCours;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CoursDAO extends DAO<Cours> {
@@ -133,10 +136,35 @@ public class CoursDAO extends DAO<Cours> {
                 throw new SQLException("aucune ligne cours effacée");
             }
             
-            
-            
-
         }
+    }
+    
+    public List<SessionCours> affSessioncours(int id) throws SQLException{
+        List<SessionCours> plusieurs = new ArrayList<>();
+        String req = "select * from sessioncours where idcours = ?";
+
+        try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
+            pstm.setInt(1, id);
+            try (ResultSet rs = pstm.executeQuery()) {
+                boolean trouve = false;
+                while (rs.next()) {
+                    trouve = true;
+                    int  ids = rs.getInt("IDSESSIONCOURS");
+                    Date datedeb = rs.getDate("DATEDEBUT");
+                    Date datefin = rs.getDate("DATEFIN");
+                    int nbreinscrit = rs.getInt("NBREINSCRITS");
+                    int idcours = rs.getInt("IDCOURS");
+                    int idlocal = rs.getInt("IDLOCAL");
+                    plusieurs.add(new SessionCours(ids,datedeb,datefin,nbreinscrit,idcours,idlocal));
+                }
+
+                if (!trouve) {
+                    throw new SQLException("Aucune session de cous correspondante à ce cours");
+                } else {
+                    return plusieurs;
+                }
+            }
+        } 
     }
     
 
