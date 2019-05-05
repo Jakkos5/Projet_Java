@@ -13,7 +13,6 @@ import formation.metier.SessionCours;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class CoursDAO extends DAO<Cours> {
 
     /**
@@ -36,7 +35,7 @@ public class CoursDAO extends DAO<Cours> {
             if (n == 0) {
                 throw new SQLException("erreur de creation du cours, aucune ligne créée");
             }
-            
+
             pstm2.setString(1, obj.getMatiere());
             try (ResultSet rs = pstm2.executeQuery()) {
                 if (rs.next()) {
@@ -69,9 +68,8 @@ public class CoursDAO extends DAO<Cours> {
                 if (rs.next()) {
                     String mat = rs.getString("MATIERE");
                     int heures = rs.getInt("HEURES");
-                   
 
-                    return new Cours(idcours, mat,heures);
+                    return new Cours(idcours, mat, heures);
 
                 } else {
                     throw new SQLException("Code inconnu");
@@ -93,12 +91,10 @@ public class CoursDAO extends DAO<Cours> {
         String req = "update cours set idcours=?,matiere=?,heures=? where idcours=?";
         try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
 
-            
             pstm.setInt(4, obj.getIdcours());
             pstm.setInt(1, obj.getIdcours());
             pstm.setString(2, obj.getMatiere());
             pstm.setInt(3, obj.getHeures());
-            
 
             int n = pstm.executeUpdate();
             if (n == 0) {
@@ -119,27 +115,26 @@ public class CoursDAO extends DAO<Cours> {
         String req = "delete from sessioncours where idcours= ?";
         String req2 = "delete from cours where idcours = ?";
         try (PreparedStatement pstm = dbConnect.prepareStatement(req);
-             PreparedStatement pstm2 = dbConnect.prepareStatement(req2)) {
+                PreparedStatement pstm2 = dbConnect.prepareStatement(req2)) {
 
-            
             pstm.setInt(1, obj.getIdcours());
-            
-            try(ResultSet rs = pstm.executeQuery()){
-                if(rs.next()){
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
                     System.out.println("Ligne dans la table sessioncours supprimée");
                 }
-                
+
             }
             pstm2.setInt(1, obj.getIdcours());
             int n = pstm2.executeUpdate();
             if (n == 0) {
                 throw new SQLException("aucune ligne cours effacée");
             }
-            
+
         }
     }
-    
-    public List<SessionCours> affSessioncours(int id) throws SQLException{
+
+    public List<SessionCours> affSessioncours(int id) throws SQLException {
         List<SessionCours> plusieurs = new ArrayList<>();
         String req = "select * from sessioncours where idcours = ?";
 
@@ -149,13 +144,13 @@ public class CoursDAO extends DAO<Cours> {
                 boolean trouve = false;
                 while (rs.next()) {
                     trouve = true;
-                    int  ids = rs.getInt("IDSESSIONCOURS");
+                    int ids = rs.getInt("IDSESSIONCOURS");
                     Date datedeb = rs.getDate("DATEDEBUT");
                     Date datefin = rs.getDate("DATEFIN");
                     int nbreinscrit = rs.getInt("NBREINSCRITS");
                     int idcours = rs.getInt("IDCOURS");
                     int idlocal = rs.getInt("IDLOCAL");
-                    plusieurs.add(new SessionCours(ids,datedeb,datefin,nbreinscrit,idcours,idlocal));
+                    plusieurs.add(new SessionCours(ids, datedeb, datefin, nbreinscrit, idcours, idlocal));
                 }
 
                 if (!trouve) {
@@ -164,8 +159,32 @@ public class CoursDAO extends DAO<Cours> {
                     return plusieurs;
                 }
             }
-        } 
+        }
     }
-    
+
+    public List<Cours> rechMatiere(String matrech) throws SQLException {
+        List<Cours> plusieurs = new ArrayList<>();
+        String req = "select * from cours where matiere = ?";
+
+        try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
+            pstm.setString(1, matrech);
+            try (ResultSet rs = pstm.executeQuery()) {
+                boolean trouve = false;
+                while (rs.next()) {
+                    trouve = true;
+                    int idcours = rs.getInt("IDCOURS");
+                    String matiere = rs.getString("MATIERE");
+                    int heures = rs.getInt("HEURES");
+                    plusieurs.add(new Cours(idcours, matiere, heures));
+                }
+                if (!trouve) {
+                    throw new SQLException("matière inconnue");
+                } else {
+                    return plusieurs;
+                }
+            }
+        }
+
+    }
 
 }

@@ -34,6 +34,7 @@ public class GestionCours extends javax.swing.JFrame {
     coursDAO.setConnection(dbConnect);
     creaCours.setCoursDAO(coursDAO);
     rechCours.setCoursDAO(coursDAO);
+    rechMatiere.setCoursDAO(coursDAO);
     }
 
     /**
@@ -47,15 +48,18 @@ public class GestionCours extends javax.swing.JFrame {
 
         creaCours = new formation.graph.CreaCours();
         rechCours = new formation.graph.RechCours();
+        rechMatiere = new formation.graph.RechMatiere();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuCours = new javax.swing.JMenu();
         itemCreation = new javax.swing.JMenuItem();
         itemrecherche = new javax.swing.JMenuItem();
+        itemrechmat = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
         getContentPane().add(creaCours, "cardCreaCours");
         getContentPane().add(rechCours, "cardRechCours");
+        getContentPane().add(rechMatiere, "cardRechMat");
 
         menuCours.setText("Cours");
 
@@ -75,6 +79,14 @@ public class GestionCours extends javax.swing.JFrame {
         });
         menuCours.add(itemrecherche);
 
+        itemrechmat.setText("Recherche par matiere");
+        itemrechmat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemrechmatActionPerformed(evt);
+            }
+        });
+        menuCours.add(itemrechmat);
+
         jMenuBar1.add(menuCours);
 
         setJMenuBar(jMenuBar1);
@@ -90,6 +102,10 @@ public class GestionCours extends javax.swing.JFrame {
         cardl.show(this.getContentPane(), "cardRechCours");
         
     }//GEN-LAST:event_itemrechercheActionPerformed
+
+    private void itemrechmatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemrechmatActionPerformed
+        cardl.show(this.getContentPane(), "cardRechMat");
+    }//GEN-LAST:event_itemrechmatActionPerformed
 
     /**
      * @param args the command line arguments
@@ -130,8 +146,10 @@ public class GestionCours extends javax.swing.JFrame {
     private formation.graph.CreaCours creaCours;
     private javax.swing.JMenuItem itemCreation;
     private javax.swing.JMenuItem itemrecherche;
+    private javax.swing.JMenuItem itemrechmat;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu menuCours;
     private formation.graph.RechCours rechCours;
+    private formation.graph.RechMatiere rechMatiere;
     // End of variables declaration//GEN-END:variables
 }
