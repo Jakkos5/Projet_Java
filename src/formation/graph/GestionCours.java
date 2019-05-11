@@ -6,6 +6,7 @@
 package formation.graph;
 
 import formation.DAO.CoursDAO;
+import formation.DAO.SessionCoursDAO;
 import java.awt.CardLayout;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
@@ -31,6 +32,8 @@ public class GestionCours extends javax.swing.JFrame {
         }
          
     CoursDAO coursDAO = new CoursDAO();
+    SessionCoursDAO sessioncoursDAO = new SessionCoursDAO();
+    sessioncoursDAO.setConnection(dbConnect);
     coursDAO.setConnection(dbConnect);
     creaCours.setCoursDAO(coursDAO);
     rechCours.setCoursDAO(coursDAO);

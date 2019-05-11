@@ -455,6 +455,7 @@ public class Gestion {
        
         try {
             List<SessionCours> SC = ((CoursDAO) coursDAO).affSessioncours(csActuel.getIdcours());
+            
             for (SessionCours S : SC) {
                 System.out.println(S);
             }

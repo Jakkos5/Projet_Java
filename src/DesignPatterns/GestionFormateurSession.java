@@ -13,12 +13,11 @@ public class GestionFormateurSession {
 
         public static void main(String[] args) {
             SessionCoursSubject sc = new SessionCoursSubject(1,null,null,5,1,3);
-            SessionCoursSubject sc2 = new SessionCoursSubject(2,null,null,4,3,5);
+            SessionCoursSubject sc2 = new SessionCoursSubject(2,null,null,4,3,5);        
             FormateurObserver fm1 = new FormateurObserver(1,"SBB-634","Durand", "Jean", 1000, "BXL","de la Senne","12A ","0456/990088");
             FormateurObserver fm2 = new FormateurObserver(2,"VTE-538","Dupont", "Luc", 1550, "Mons","Marabou","7301 ","078963214");
-            sc.addObserver(fm1);
-            sc.addObserver(fm2);
-            sc2.addObserver(fm1);
+            InfosD i = new InfosD(fm1,sc);
+            InfosD e = new InfosD(fm2,sc2);
             
             sc.setIdlocal(7);
             sc2.setIdlocal(11);

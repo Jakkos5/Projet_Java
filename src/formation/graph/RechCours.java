@@ -6,8 +6,16 @@
 package formation.graph;
 
 import formation.DAO.CoursDAO;
+import formation.DAO.SessionCoursDAO;
 import formation.metier.Cours;
+import formation.metier.SessionCours;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,16 +27,34 @@ public class RechCours extends javax.swing.JPanel {
      * Creates new form RechCours
      */
     CoursDAO coursDAO = null;
+    SessionCoursDAO sessioncoursDAO = null;
     Cours crs = null;
+    int idCours = 0;
+    DefaultTableModel dft1 = new DefaultTableModel();
 
     public RechCours() {
         initComponents();
+        dft1.addColumn("Id de la session");
+        dft1.addColumn("Date de debut");
+        dft1.addColumn("Date de fin");
+        dft1.addColumn("Nbre d'inscrits");
+        dft1.addColumn("Id du cours");
+        dft1.addColumn("Id du local");
+        jTable1.setModel(dft1);
+        
     }
+    
 
     public void setCoursDAO(CoursDAO coursDAO) {
         this.coursDAO = coursDAO;
     }
+    public void setSessioncoursDAO(SessionCoursDAO sessioncoursDAO) {
+        this.sessioncoursDAO = sessioncoursDAO;
+    }
 
+   
+   
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,12 +67,15 @@ public class RechCours extends javax.swing.JPanel {
         labelIdcours = new javax.swing.JLabel();
         labelMatiere = new javax.swing.JLabel();
         labelHeures = new javax.swing.JLabel();
-        txtIdcours = new javax.swing.JTextField();
+        txtIdcours1 = new javax.swing.JTextField();
         txtMatiere = new javax.swing.JTextField();
         txtHeures = new javax.swing.JTextField();
         btnRech = new javax.swing.JButton();
         btnMaj = new javax.swing.JButton();
         btnEff = new javax.swing.JButton();
+        btnAffsession = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         labelIdcours.setText("Id du cours");
 
@@ -54,9 +83,9 @@ public class RechCours extends javax.swing.JPanel {
 
         labelHeures.setText("Heures");
 
-        txtIdcours.addActionListener(new java.awt.event.ActionListener() {
+        txtIdcours1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdcoursActionPerformed(evt);
+                txtIdcours1ActionPerformed(evt);
             }
         });
 
@@ -88,6 +117,26 @@ public class RechCours extends javax.swing.JPanel {
             }
         });
 
+        btnAffsession.setText("Affichage de la session correspondante au cours");
+        btnAffsession.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAffsessionActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5 ", "Title 6"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,25 +155,30 @@ public class RechCours extends javax.swing.JPanel {
                                     .addComponent(labelMatiere))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtIdcours)
-                            .addComponent(txtMatiere, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                            .addComponent(txtIdcours1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                            .addComponent(txtMatiere)
                             .addComponent(txtHeures))
-                        .addGap(117, 117, 117))
+                        .addGap(84, 84, 84))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnRech)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addGap(48, 48, 48)
                         .addComponent(btnMaj)
-                        .addGap(52, 52, 52)
+                        .addGap(53, 53, 53)
                         .addComponent(btnEff)
-                        .addGap(47, 47, 47))))
+                        .addContainerGap(59, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addComponent(btnAffsession)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelIdcours)
-                    .addComponent(txtIdcours, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIdcours1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelIdcours))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelMatiere)
@@ -133,18 +187,22 @@ public class RechCours extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelHeures)
                     .addComponent(txtHeures, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRech)
                     .addComponent(btnMaj)
                     .addComponent(btnEff))
-                .addGap(39, 39, 39))
+                .addGap(34, 34, 34)
+                .addComponent(btnAffsession)
+                .addGap(48, 48, 48)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(78, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtIdcoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdcoursActionPerformed
+    private void txtIdcours1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdcours1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdcoursActionPerformed
+    }//GEN-LAST:event_txtIdcours1ActionPerformed
 
     private void txtMatiereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatiereActionPerformed
         // TODO add your handling code here:
@@ -152,7 +210,7 @@ public class RechCours extends javax.swing.JPanel {
 
     private void btnMajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMajActionPerformed
         try {
-            int idCours = Integer.parseInt(txtIdcours.getText());
+            int idCours = Integer.parseInt(txtIdcours1.getText());
             String matiere = txtMatiere.getText();
             int heures = Integer.parseInt(txtHeures.getText());
             crs = new Cours(idCours, matiere, heures);
@@ -167,7 +225,7 @@ public class RechCours extends javax.swing.JPanel {
 
     private void btnRechActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRechActionPerformed
         try {
-            int idCours = Integer.parseInt(txtIdcours.getText());
+            idCours = Integer.parseInt(txtIdcours1.getText());
             crs = coursDAO.read(idCours);
             txtMatiere.setText(crs.getMatiere());
             txtHeures.setText("" + crs.getHeures());
@@ -179,8 +237,9 @@ public class RechCours extends javax.swing.JPanel {
 
     private void btnEffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEffActionPerformed
         try {
-            int idCours = Integer.parseInt(txtIdcours.getText());
+            
             coursDAO.delete(crs);
+            txtIdcours1.setText("");
             txtMatiere.setText("");
             txtHeures.setText("");
             JOptionPane.showMessageDialog(this, "cours effacé", "succès", JOptionPane.INFORMATION_MESSAGE);
@@ -189,16 +248,43 @@ public class RechCours extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnEffActionPerformed
 
+    private void btnAffsessionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAffsessionActionPerformed
+
+        try{ 
+        
+        List<SessionCours> alc = coursDAO.affSessioncours(crs.getIdcours());
+        int nr = dft1.getRowCount();
+        for(int i=nr-1;i>=0;i--)dft1.removeRow(i);
+        for(SessionCours sc:alc){
+            Vector v = new Vector();
+            v.add(sc.getIdsessioncours());
+            v.add(sc.getDatedebut());
+            v.add(sc.getDatefin());
+            v.add(sc.getNbreinscrits());
+            v.add(sc.getIdcours());
+            v.add(sc.getIdlocal());
+            dft1.addRow(v);
+           
+        }
+       }
+       catch(Exception e){
+           JOptionPane.showMessageDialog(this,e.getMessage(),"ERREUR",JOptionPane.ERROR_MESSAGE);
+       }
+    }//GEN-LAST:event_btnAffsessionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAffsession;
     private javax.swing.JButton btnEff;
     private javax.swing.JButton btnMaj;
     private javax.swing.JButton btnRech;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelHeures;
     private javax.swing.JLabel labelIdcours;
     private javax.swing.JLabel labelMatiere;
     private javax.swing.JTextField txtHeures;
-    private javax.swing.JTextField txtIdcours;
+    private javax.swing.JTextField txtIdcours1;
     private javax.swing.JTextField txtMatiere;
     // End of variables declaration//GEN-END:variables
 }

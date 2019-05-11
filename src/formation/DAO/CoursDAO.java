@@ -121,7 +121,7 @@ public class CoursDAO extends DAO<Cours> {
 
             try (ResultSet rs = pstm.executeQuery()) {
                 if (rs.next()) {
-                    System.out.println("Ligne dans la table sessioncours supprimée");
+                    System.out.println("Ligne dans la table sessioncours correspondante à ce cours supprimée également");
                 }
 
             }

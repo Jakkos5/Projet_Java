@@ -5,7 +5,7 @@
  */
 package DesignPatterns;
 
-import formation.metier.Infos;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +24,7 @@ public class FormateurObserver extends Observer{
     protected String rue;
     protected String num;
     protected String tel;
-    protected Set<Infos> mesInfos = new HashSet<>();
+    protected Set<InfosD> mesInfos = new HashSet<>();
 
     public FormateurObserver(int idform, String matricule, String nom, String prenom, int cp, String localite, String rue, String num, String tel) {
         this.idform = idform;
@@ -37,7 +37,7 @@ public class FormateurObserver extends Observer{
         this.num = num;
         this.tel = tel;
     }
-
+       
     public int getIdform() {
         return idform;
         
@@ -111,19 +111,20 @@ public class FormateurObserver extends Observer{
         this.tel = tel;
     }
 
-    public Set<Infos> getMesInfos() {
+    public Set<InfosD> getMesInfos() {
         return mesInfos;
     }
 
-    public void setMesInfos(Set<Infos> mesInfos) {
+    public void setMesInfos(Set<InfosD> mesInfos) {
         this.mesInfos = mesInfos;
     }
 
     @Override
     public String toString() {
-        return "FormateurObserver{" + "idform=" + idform + ", matricule=" + matricule + ", nom=" + nom + ", prenom=" + prenom + ", cp=" + cp + ", localite=" + localite + ", rue=" + rue + ", num=" + num + ", tel=" + tel + ", mesInfos=" + mesInfos + '}';
+        return "FormateurObserver{" + "idform=" + idform + ", matricule=" + matricule + ", nom=" + nom + ", prenom=" + prenom + ", cp=" + cp + ", localite=" + localite + ", rue=" + rue + ", num=" + num + ", tel=" + tel + '}';
     }
 
+    
     @Override
     public void update(String msg) {
         System.out.println(prenom + " " + nom + " a reçu le msg :" + msg);
