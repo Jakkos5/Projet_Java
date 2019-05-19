@@ -13,12 +13,15 @@ import java.util.Scanner;
 import formation.metier.Locaux;
 import formation.DAO.DAO;
 import formation.DAO.FormateurDAO;
+import formation.DAO.InfosDAO;
 import formation.DAO.LocauxDAO;
 import formation.DAO.SessionCoursDAO;
 import formation.metier.Cours;
 import formation.metier.Formateur;
+import formation.metier.Infos;
 import formation.metier.SessionCours;
 import java.sql.Date;
+import java.util.ArrayList;
 import myconnections.DBConnection;
 
 /**
@@ -32,16 +35,18 @@ public class Gestion {
     Formateur fmActuel = null;
     Cours csActuel = null;
     SessionCours scActuel = null;
+    Infos infActuel = null;
     DAO<Cours> coursDAO = null;
     DAO<Locaux> locauxDAO = null;
     DAO<Formateur> formateurDAO = null;
     DAO<SessionCours> sessioncoursDAO = null;
+    DAO<Infos> infosDAO = null;
 
     public Gestion() {
 
     }
 
-    public void menu() {
+    public void menu() throws SQLException {
 
         Connection dbConnect = DBConnection.getConnection();
         if (dbConnect == null) {
@@ -53,6 +58,8 @@ public class Gestion {
 
         locauxDAO = new LocauxDAO();
         locauxDAO.setConnection(dbConnect);
+        infosDAO = new InfosDAO();
+        infosDAO.setConnection(dbConnect);
         formateurDAO = new FormateurDAO();
         formateurDAO.setConnection(dbConnect);
         coursDAO = new CoursDAO();
@@ -105,7 +112,7 @@ public class Gestion {
                     int ch1 = 0;
                     //menu pour les formateurs et vues
                     do {
-                        System.out.println("1.Nouveau\n2.Recherche\n3.Modification\n4.Suppresion\n5.Affichage Sessions\n6.Affichage heures par session\n7.Fin\n");
+                        System.out.println("1.Nouveau\n2.Recherche\n3.Modification\n4.Suppresion\n5.Affichage Sessions\n6.Affichage heures par session\n7.Rejoindre une session\n8.Fin\n");
                         System.out.print("choix :");
                         ch1 = sc.nextInt();
                         sc.skip("\n");
@@ -127,7 +134,9 @@ public class Gestion {
                             case 6:
                                 affHeures();
                                 break;
-                            case 7:
+                            case 7 : liasonFormSession();
+                                break;
+                            case 8:
                                 System.out.println("Goodbye");
                                 break;
                             default:
@@ -135,11 +144,12 @@ public class Gestion {
                         }
 
                     } while (ch1 != 7);
+                    break;
                 case 3:
                     int ch2 = 0;
                     //menu cours
                     do {
-                        System.out.println("1.Nouveau \n2.Recherche\n3.Modification\n4.Suppresion\n5.Affichage session(s) du cours actuel\n6.Fin\n");
+                        System.out.println("1.Nouveau \n2.Recherche\n3.Modification\n4.Suppresion\n5.Affichage session(s) du cours actuel\n6.Fin");
                         System.out.print("choix :");
                         ch2 = sc.nextInt();
                         sc.skip("\n");
@@ -166,7 +176,7 @@ public class Gestion {
                                 System.out.println("choix incorrect");
                         }
 
-                    } while (ch2 != 6);
+                    } while (ch2 != 7);
                     break;
                 case 4:
                     int ch3 = 0;
@@ -392,6 +402,64 @@ public class Gestion {
 
     }
 
+    public void liasonFormSession() throws SQLException {
+
+        if(fmActuel == null) rechercheFormateur();
+        int choix = 0;
+        System.out.println("Bonjour " + fmActuel.getNom() + " " + fmActuel.getPrenom());
+
+        System.out.println("Voici la liste des formations: \n");
+        List<SessionCours> SC = ((SessionCoursDAO) sessioncoursDAO).touteSession();
+        int i = 1;
+        for (SessionCours ss : SC) {
+            System.out.println((i++) + "." + ss);
+        }
+        boolean erreur;
+        do {
+            erreur = false;
+            try {
+                System.out.println("\n A quelle session voulez-vous participer?");
+                choix = sc.nextInt();
+            } catch (NumberFormatException e) {
+                System.out.println("Veuillez entrez un nombre svp");
+                erreur = true;
+            }
+            if (choix <= 0 || choix > SC.size()) {
+                System.out.println("Entrez un nombre valide svp");
+                erreur = true;
+            }
+        } while (erreur);
+
+        int nbheures = 0;
+        do {
+            erreur = false;
+            try {
+                System.out.println("Combien d'heures voulez-vous donner?");
+                nbheures = sc.nextInt();
+            } catch (NumberFormatException e) {
+                System.out.println("Entrer un nombres d'heures valide svp");
+                erreur = true;
+            }
+            if (nbheures <= 0) {
+                System.out.println("Entrer un nombre d'heures supérieur a 0 svp");
+                erreur = true;
+            }
+        } while (erreur);
+        
+
+        infActuel = new Infos(nbheures,SC.get(choix-1).getIdsessioncours(),fmActuel.getIdform());
+        
+        try{
+            infActuel = infosDAO.create(infActuel);
+            System.out.println(infActuel);
+        }catch(SQLException e){
+            System.out.println("Erreur: "+e);
+        }
+        
+        
+        
+    }
+
     public void insertionCours() {
 
         System.out.print("Matiere :");
@@ -417,7 +485,7 @@ public class Gestion {
             System.out.println("cours actuel : " + csActuel);
 
         } catch (SQLException e) {
-            System.out.println("erreur " + e.getMessage());
+            System.out.println("Ce cours n'existe pas");
         }
 
     }
@@ -449,13 +517,12 @@ public class Gestion {
         }
 
     }
-    
-    public void affSessioncours(){
-        
-       
+
+    public void affSessioncours() {
+
         try {
             List<SessionCours> SC = ((CoursDAO) coursDAO).affSessioncours(csActuel.getIdcours());
-            
+
             for (SessionCours S : SC) {
                 System.out.println(S);
             }
@@ -556,7 +623,7 @@ public class Gestion {
         return str;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Gestion g = new Gestion();
         g.menu();
     }

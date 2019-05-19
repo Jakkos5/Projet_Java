@@ -10,7 +10,8 @@ package formation.DAO;
 import java.sql.*;
 import formation.metier.Cours;
 import formation.metier.SessionCours;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class SessionCoursDAO extends DAO<SessionCours> {
 
@@ -35,9 +36,9 @@ public class SessionCoursDAO extends DAO<SessionCours> {
             pstm1.setInt(5, obj.getIdlocal());
             int n = pstm1.executeUpdate();
             if (n == 0) {
-                throw new SQLException("erreur de creation du cours, aucune ligne créée");
+                throw new SQLException("erreur de creation de la session de cours, aucune ligne créée");
             }
-            
+
             pstm2.setInt(1, obj.getIdlocal());
             try (ResultSet rs = pstm2.executeQuery()) {
                 if (rs.next()) {
@@ -45,14 +46,15 @@ public class SessionCoursDAO extends DAO<SessionCours> {
                     obj.setIdsessioncours(idsessioncours);
                     return read(idsessioncours);
                 } else {
-                    throw new SQLException("erreur de création du cours, record introuvable");
+                    throw new SQLException("erreur de création de la session de cours, record introuvable");
                 }
             }
         }
     }
 
     /**
-     * récupération des données d'une session de cours sur base de son identifiant
+     * récupération des données d'une session de cours sur base de son
+     * identifiant
      *
      * @throws SQLException code inconnu
      * @param idsessioncours identifiant de la session du cours
@@ -73,9 +75,8 @@ public class SessionCoursDAO extends DAO<SessionCours> {
                     int nbreinscrits = rs.getInt("NBREINSCRITS");
                     int idcours = rs.getInt("IDCOURS");
                     int idlocal = rs.getInt("IDLOCAL");
-                   
 
-                    return new SessionCours(idsessioncours, datedeb,datefin,nbreinscrits,idcours,idlocal);
+                    return new SessionCours(idsessioncours, datedeb, datefin, nbreinscrits, idcours, idlocal);
 
                 } else {
                     throw new SQLException("Code inconnu");
@@ -86,7 +87,8 @@ public class SessionCoursDAO extends DAO<SessionCours> {
     }
 
     /**
-     * mise à jour des données d'une session de cours sur base de son identifiant
+     * mise à jour des données d'une session de cours sur base de son
+     * identifiant
      *
      * @return sessioncours
      * @param obj sessioncours à mettre à jour
@@ -97,7 +99,6 @@ public class SessionCoursDAO extends DAO<SessionCours> {
         String req = "update sessioncours set idsessioncours=?,datedebut=?,datefin=?,nbreinscrits=?,idcours=?,idlocal=? where idsessioncours=?";
         try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
 
-            
             pstm.setInt(7, obj.getIdsessioncours());
             pstm.setInt(1, obj.getIdsessioncours());
             pstm.setDate(2, obj.getDatedebut());
@@ -105,7 +106,6 @@ public class SessionCoursDAO extends DAO<SessionCours> {
             pstm.setInt(4, obj.getNbreinscrits());
             pstm.setInt(5, obj.getIdcours());
             pstm.setInt(6, obj.getIdlocal());
-            
 
             int n = pstm.executeUpdate();
             if (n == 0) {
@@ -126,18 +126,37 @@ public class SessionCoursDAO extends DAO<SessionCours> {
         String req = "delete from sessioncours where idsessioncours= ?";
         try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
 
-            
             pstm.setInt(1, obj.getIdsessioncours());
-            
-            try(ResultSet rs = pstm.executeQuery()){
-                if(rs.next()){
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
                     System.out.println("Ligne supprimée");
                 }
-                
+
             }
-           
+
         }
     }
-    
 
+    public List<SessionCours> touteSession() throws SQLException {
+        List<SessionCours> plusieurs = new ArrayList<>();
+        String req = "select * from sessioncours";
+
+        try (PreparedStatement pstm = dbConnect.prepareStatement(req)) {
+            try (ResultSet rs = pstm.executeQuery()) {
+                boolean trouve = false;
+                while (rs.next()) {
+                    trouve = true;
+                    int ids = rs.getInt("IDSESSIONCOURS");
+                    Date datedeb = rs.getDate("DATEDEBUT");
+                    Date datefin = rs.getDate("DATEFIN");
+                    int nbreinscrit = rs.getInt("NBREINSCRITS");
+                    int idcours = rs.getInt("IDCOURS");
+                    int idlocal = rs.getInt("IDLOCAL");
+                    plusieurs.add(new SessionCours(ids, datedeb, datefin, nbreinscrit, idcours, idlocal));
+                }
+                return plusieurs;
+            }
+        }
+    }
 }

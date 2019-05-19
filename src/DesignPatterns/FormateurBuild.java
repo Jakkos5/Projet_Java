@@ -3,7 +3,7 @@ import formation.metier.Infos;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FormateurSingleton {
+public class FormateurBuild {
 
     protected int idform;
     protected String matricule;
@@ -16,7 +16,7 @@ public class FormateurSingleton {
     protected String tel;
     protected Set<Infos> mesInfos = new HashSet<>();
 
-    private FormateurSingleton(FormateurBuilder cb) {
+    private FormateurBuild(FormateurBuilder cb) {
         this.idform = cb.idform;
         this.matricule = cb.matricule;
         this.nom = cb.nom;
@@ -90,11 +90,11 @@ public class FormateurSingleton {
             return this;
         }
 
-        public FormateurSingleton build() throws Exception {
+        public FormateurBuild build() throws Exception {
             if (idform <= 0 || nom == null || prenom == null || matricule == null) {
                 throw new Exception("informations de construction incomplètes");
             }
-            return new FormateurSingleton(this);
+            return new FormateurBuild(this);
         }
     }
 
@@ -107,7 +107,7 @@ public class FormateurSingleton {
 
     public static void main(String[] args) {
         try {
-            FormateurSingleton fm1 = new FormateurSingleton.FormateurBuilder().
+            FormateurBuild fm1 = new FormateurBuild.FormateurBuilder().
                     setIdform(1).
                     setNom("Durant").
                     setPrenom("Eric").
@@ -120,7 +120,7 @@ public class FormateurSingleton {
             System.out.println("erreur " + e);
         }
         try {
-            FormateurSingleton fm2 = new FormateurSingleton.FormateurBuilder().
+            FormateurBuild fm2 = new FormateurBuild.FormateurBuilder().
                     setIdform(1).
                     setNom("Durant").
                     setPrenom("Eric").
